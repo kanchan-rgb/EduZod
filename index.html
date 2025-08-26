@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduMaster - Interactive Learning Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Login Page Styles */
+        .login-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: slideIn 0.6s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-container h1 {
+            color: #4c51bf;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .login-container p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #4c51bf;
+            box-shadow: 0 0 0 3px rgba(76, 81, 191, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #4c51bf, #667eea);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(76, 81, 191, 0.3);
+        }
+
+        .demo-credentials {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #4c51bf;
+            text-align: left;
+        }
+
+        .demo-credentials h4 {
+            color: #4c51bf;
+            margin-bottom: 8px;
+        }
+
+        /* Main App Styles */
+        .main-app {
+            display: none;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            position: relative;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: #4c51bf;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #4c51bf, #667eea);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #e53e3e;
+            transform: translateY(-1px);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #4c51bf, #667eea);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 81, 191, 0.4);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(76, 81, 191, 0.6);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #38b2ac, #4fd1c7);
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .subject-card {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: #4a5568;
+            display: block;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .subject-card h3 {
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .question-card {
+            background: #f7fafc;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #4c51bf;
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .option {
+            background: #e2e8f0;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .option:hover {
+            background: #cbd5e0;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: #4c51bf;
+            color: white;
+            border-color: #2d3748;
+        }
+
+        .quiz-controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #4c51bf, #667eea);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 81, 191, 0.4);
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.5em;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 15px;
+        }
+
+        /* Example Links Section */
+        .examples-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 15px;
+            border-left: 5px solid #4c51bf;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .example-link {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #4a5568;
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .example-link:hover {
+            border-color: #4c51bf;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 81, 191, 0.2);
+        }
+
+        /* Chatbot Styles */
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(255, 107, 107, 0.5);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.7);
+        }
+
+        .chatbot-container {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 999;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chatbot-header {
+            background: linear-gradient(45deg, #4c51bf, #667eea);
+            color: white;
+            padding: 15px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 350px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            animation: fadeInMessage 0.3s ease;
+        }
+
+        @keyframes fadeInMessage {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .message.bot {
+            background: #e2e8f0;
+            margin-right: auto;
+        }
+
+        .message.user {
+            background: #4c51bf;
+            color: white;
+            margin-left: auto;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .chatbot-input button {
+            background: #4c51bf;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4c51bf, #667eea);
+            transition: width 0.3s ease;
+        }
+
+        .video-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .notes-area {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .achievements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .achievement-badge {
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .error-message {
+            color: #f56565;
+            background: #fed7d7;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .chatbot-container {
+                width: 300px;
+                height: 450px;
+            }
+
+            .header-top {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
+            <h1>🎓 EduMaster</h1>
+            <p>Your Interactive Learning Companion</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Login to EduMaster</button>
+                
+                <div id="errorMessage" class="error-message">
+                    Invalid username or password. Please try again.
+                </div>
+            </form>
+            
+            <div class="demo-credentials">
+                <h4>🔑 Demo Credentials:</h4>
+                <p><strong>Username:</strong> admin</p>
+                <p><strong>Password:</strong> admin</p>
+                <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                    Use these credentials to access the learning platform
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="main-app">
+        <div class="container">
+            <div class="header">
+                <div class="header-top">
+                    <h1>🎓 EduMaster</h1>
+                    <div class="user-info">
+                        <div class="user-avatar">A</div>
+                        <span>Welcome, Admin!</span>
+                        <button class="logout-btn" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-bottom: 20px;">Your Interactive Learning Companion</p>
+                <div class="nav-buttons">
+                    <button class="nav-btn active" onclick="showSection('dashboard')">Dashboard</button>
+                    <button class="nav-btn" onclick="showSection('subjects')">Subjects</button>
+                    <button class="nav-btn" onclick="showSection('quiz')">Quiz</button>
+                    <button class="nav-btn" onclick="showSection('notes')">Notes</button>
+                    <button class="nav-btn" onclick="showSection('progress')">Progress</button>
+                    <button class="nav-btn" onclick="showSection('examples')">Examples</button>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="content-section active">
+                <h2>Welcome to EduMaster! 🚀</h2>
+                <div class="score-display">
+                    <h3>Your Learning Stats</h3>
+                    <p>📊 Quizzes Completed: <span id="quizCount">0</span></p>
+                    <p>🏆 Current Score: <span id="totalScore">0</span>/100</p>
+                    <p>📈 Subjects Studied: <span id="subjectsStudied">0</span></p>
+                </div>
+                
+                <div class="achievements">
+                    <div class="achievement-badge">
+                        <h4>🌟 First Steps</h4>
+                        <p>Complete your first quiz</p>
+                    </div>
+                    <div class="achievement-badge">
+                        <h4>📚 Bookworm</h4>
+                        <p>Study 3 different subjects</p>
+                    </div>
+                    <div class="achievement-badge">
+                        <h4>🏅 Quiz Master</h4>
+                        <p>Score 80% or higher</p>
+                    </div>
+                </div>
+
+                <div class="examples-section">
+                    <h3>🔗 Quick Access Links</h3>
+                    <div class="examples-grid">
+                        <a href="#" class="example-link" onclick="showSection('subjects')">
+                            <strong>📚 Browse Subjects</strong><br>
+                            Explore all available courses
+                        </a>
+                        <a href="#" class="example-link" onclick="showSection('quiz')">
+                            <strong>🧠 Take a Quiz</strong><br>
+                            Test your knowledge
+                        </a>
+                        <a href="#" class="example-link" onclick="showSection('notes')">
+                            <strong>📝 My Notes</strong><br>
+                            View and edit your notes
+                        </a>
+                        <a href="#" class="example-link" onclick="showSection('progress')">
+                            <strong>📈 Track Progress</strong><br>
+                            See your learning journey
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subjects Section -->
+            <div id="subjects" class="content-section">
+                <h2>Choose Your Subject 📖</h2>
+                <div class="subjects-grid">
+                    <a href="#" class="subject-card" onclick="selectSubject('mathematics')">
+                        <h3>🔢 Mathematics</h3>
+                        <p>Algebra, Geometry, Calculus</p>
+                        <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                            Click to start learning mathematics concepts
+                        </p>
+                    </a>
+                    <a href="#" class="subject-card" onclick="selectSubject('science')">
+                        <h3>🔬 Science</h3>
+                        <p>Physics, Chemistry, Biology</p>
+                        <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                            Explore the wonders of science
+                        </p>
+                    </a>
+                    <a href="#" class="subject-card" onclick="selectSubject('english')">
+                        <h3>📝 English</h3>
+                        <p>Grammar, Literature, Writing</p>
+                        <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                            Improve your language skills
+                        </p>
+                    </a>
+                    <a href="#" class="subject-card" onclick="selectSubject('history')">
+                        <h3>🏛️ History</h3>
+                        <p>World History, Ancient Civilizations</p>
+                        <p style="margin-top: 10px; font-size: 14px; color: #666;">
+                            Journey through time and cultures
+                        </p>
+                    </a>
+                </div>
+
+                <div id="subjectContent" style="margin-top: 30px; display: none;">
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            📹 Interactive Video Lesson
+                        </div>
+                        <button class="btn" onclick="startLesson()">Start Lesson</button>
+                        <a href="#" class="btn" onclick="showSection('quiz')" style="margin-left: 10px;">Take Quiz</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div id="quiz" class="content-section">
+                <h2>Interactive Quiz 🧠</h2>
+                <div class="quiz-container">
+                    <div id="quizContent">
+                        <div style="text-align: center;">
+                            <p style="font-size: 1.2em; margin-bottom: 20px;">Ready to test your knowledge?</p>
+                            <button class="btn" onclick="startQuiz()">Start Quiz</button>
+                            <a href="#" class="btn" onclick="showSection('subjects')" style="margin-left: 10px;">Choose Subject First</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Section -->
+            <div id="notes" class="content-section">
+                <h2>Your Study Notes 📝</h2>
+                <textarea class="notes-area" placeholder="Write your notes here... They'll be saved automatically!" id="notesTextarea"></textarea>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" onclick="saveNotes()">Save Notes</button>
+                    <button class="btn" onclick="clearNotes()">Clear All</button>
+                    <a href="#" class="btn" onclick="showSection('subjects')">Back to Subjects</a>
+                </div>
+            </div>
+
+            <!-- Progress Section -->
+            <div id="progress" class="content-section">
+                <h2>Your Learning Progress 📈</h2>
+                
+                <div style="margin-bottom: 30px;">
+                    <h3>Mathematics</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 65%"></div>
+                    </div>
+                    <p>65% Complete - <a href="#" onclick="selectSubject('mathematics'); showSection('subjects');" style="color: #4c51bf;">Continue Learning</a></p>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h3>Science</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 40%"></div>
+                    </div>
+                    <p>40% Complete - <a href="#" onclick="selectSubject('science'); showSection('subjects');" style="color: #4c51bf;">Continue Learning</a></p>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h3>English</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 80%"></div>
+                    </div>
+                    <p>80% Complete - <a href="#" onclick="selectSubject('english'); showSection('subjects');" style="color: #4c51bf;">Continue Learning</a></p>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h3>History</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 25%"></div>
+                    </div>
+                    <p>25% Complete - <a href="#" onclick="selectSubject('history'); showSection('subjects');" style="color: #4c51bf;">Continue Learning</a></p>
+                </div>
+            </div>
+
+            <!-- Examples Section -->
+            <div id="examples" class="content-section">
+                <h2>Example Links & Resources 🔗</h2>
+                <p style="margin-bottom: 20px;">Here are some example educational resources and external links:</p>
+                
+                <div class="examples-section">
+                    <h3>📚 Educational Websites</h3>
+                    <div class="examples-grid">
+                        <a href="https://www.khanacademy.org" target="_blank" class="example-link">
+                            <strong>Khan Academy</strong><br>
+                            Free online courses and lessons
+                        </a>
+                        <a href="https://www.coursera.org" target="_blank" class="example-link">
+                            <strong>Coursera</strong><br>
+                            University-level online courses
+                        </a>
+                        <a href="https://www.edx.org" target="_blank" class="example-link">
+                            <strong>edX</strong><br>
+                            Harvard & MIT online courses
+                        </a>
+                        <a href="https://www.codecademy.com" target="_blank" class="example-link">
+                            <strong>Codecademy</strong><br>
+                            Learn programming interactively
+                        </a>
+                    </div>
+                </div>
+
+                <div class="examples-section">
+                    <h3>🔬 Science Resources</h3>
+                    <div class="examples-grid">
+                        <a href="https://www.nasa.gov/audience/forstudents/" target="_blank" class="example-link">
+                            <strong>NASA for Students</strong><br>
+                            Space science and exploration
+                        </a>
+                        <a href="https://www.nationalgeographic.org/education/" target="_blank" class="example-link">
+                            <strong>National Geographic</strong><br>
+                            Geography and nature education
+                        </a>
+                        <a href="https://www.ted.com/talks" target="_blank" class="example-link">
+                            <strong>TED Talks</strong><br>
+                            Educational talks by experts
+                        </a>
+                        <a href="https://www.britannica.com" target="_blank" class="example-link">
+                            <strong>Encyclopedia Britannica</strong><br>
+                            Comprehensive reference material
+                        </a>
+                    </div>
+                </div>
+
+                <div class="examples-section">
+                    <h3>🎯 Internal Navigation Examples</h3>
+                    <div class="examples-grid">
+                        <a href="#" class="example-link" onclick="selectSubject('mathematics'); showSection('quiz');">
+                            <strong>Math Quiz</strong><br>
+                            Jump directly to mathematics quiz
+                        </a>
+                        <a href="#" class="example-link" onclick="selectSubject('science'); startLesson();">
+                            <strong>Science Lesson</strong><br>
+                            Start a science video lesson
+                        </a>
+                        <a href="#" class="example-link" onclick="showSection('notes');">
+                            <strong>Take Notes</strong><br>
+                            Open the note-taking interface
+                        </a>
+                        <a href="#" class="example-link" onclick="showSection('dashboard');">
+                            <strong>Dashboard</strong><br>
+                            Return to main dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chatbot -->
+        <button class="chatbot-toggle" onclick="toggleChatbot()">💬</button>
+        
+        <div id="chatbotContainer" class="chatbot-container">
+            <div class="chatbot-header">
+                <h3>🤖 EduBot - Your Learning Assistant</h3>
+            </div>
+            <div class="chatbot-messages" id="chatMessages">
+                <div class="message bot">
+                    Hi! I'm EduBot, your learning assistant. I can help you with:
+                    <br>• Explaining concepts
+                    <br>• Quiz questions
+                    <br>• Study tips
+                    <br>• Subject recommendations
+                    <br><br>What would you like to learn today?
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatInput" placeholder="Ask me anything..." onkeypress="handleEnter(event)">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentQuiz = [];
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedSubject = '';
+        let studyData = {
+            quizCount: 0,
+            totalScore: 0,
+            subjectsStudied: new Set()
+        };
+        let isLoggedIn = false;
+
+        // Quiz questions database
+        const quizData = {
+            mathematics: [
+                {
+                    question: "What is 2 + 2?",
+                    options: ["3", "4", "5", "6"],
+                    correct: 1
+                },
+                {
+                    question: "What is the square root of 16?",
+                    options: ["2", "4", "6", "8"],
+                    correct: 1
+                },
+                {
+                    question: "What is 10% of 100?",
+                    options: ["1", "10", "100", "1000"],
+                    correct: 1
+                },
+                {
+                    question: "What is 5 × 7?",
+                    options: ["30", "35", "40", "45"],
+                    correct: 1
+                },
+                {
+                    question: "What is 144 ÷ 12?",
+                    options: ["10", "11", "12", "13"],
+                    correct: 2
+                }
+            ],
+            science: [
+                {
+                    question: "What is H2O?",
+                    options: ["Hydrogen", "Oxygen", "Water", "Carbon"],
+                    correct: 2
+                },
+                {
+                    question: "How many planets are in our solar system?",
+                    options: ["7", "8", "9", "10"],
+                    correct: 1
+                },
+                {
+                    question: "What gas do plants absorb from the atmosphere?",
+                    options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Helium"],
+                    correct: 2
+                },
+                {
+                    question: "What is the chemical symbol for gold?",
+                    options: ["Go", "Gd", "Au", "Ag"],
+                    correct: 2
+                },
+                {
+                    question: "What force keeps us on Earth?",
+                    options: ["Magnetism", "Gravity", "Friction", "Pressure"],
+                    correct: 1
+                }
+            ],
+            english: [
+                {
+                    question: "What is the past tense of 'go'?",
+                    options: ["goes", "went", "going", "gone"],
+                    correct: 1
+                },
+                {
+                    question: "Which is a noun?",
+                    options: ["quickly", "run", "beautiful", "house"],
+                    correct: 3
+                },
+                {
+                    question: "What punctuation ends a question?",
+                    options: [".", "!", "?", ";"],
+                    correct: 2
+                },
+                {
+                    question: "Which word is an adjective?",
+                    options: ["run", "beautiful", "quickly", "and"],
+                    correct: 1
+                },
+                {
+                    question: "What is a synonym for 'happy'?",
+                    options: ["sad", "joyful", "angry", "tired"],
+                    correct: 1
+                }
+            ],
+            history: [
+                {
+                    question: "In which year did World War II end?",
+                    options: ["1944", "1945", "1946", "1947"],
+                    correct: 1
+                },
+                {
+                    question: "Who was the first President of the United States?",
+                    options: ["Thomas Jefferson", "John Adams", "George Washington", "Benjamin Franklin"],
+                    correct: 2
+                },
+                {
+                    question: "Which empire built Machu Picchu?",
+                    options: ["Aztec", "Maya", "Inca", "Olmec"],
+                    correct: 2
+                },
+                {
+                    question: "In which year did the Berlin Wall fall?",
+                    options: ["1987", "1988", "1989", "1990"],
+                    correct: 2
+                },
+                {
+                    question: "Who painted the Mona Lisa?",
+                    options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+                    correct: 2
+                }
+            ]
+        };
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Check credentials
+            if (username === 'admin' && password === 'admin') {
+                isLoggedIn = true;
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                errorMessage.style.display = 'none';
+            } else {
+                errorMessage.style.display = 'block';
+                // Clear the form
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            }
+        });
+
+        // Logout functionality
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                isLoggedIn = false;
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('mainApp').style.display = 'none';
+                
+                // Reset form
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                // Reset app state
+                showSection('dashboard');
+                selectedSubject = '';
+                currentQuestion = 0;
+                score = 0;
+            }
+        }
+
+        // Navigation functions
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Remove active class from all nav buttons
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to corresponding button
+            const activeButton = Array.from(buttons).find(btn => 
+                btn.textContent.toLowerCase().includes(sectionId.toLowerCase()) ||
+                (sectionId === 'examples' && btn.textContent.includes('Examples'))
+            );
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+
+        // Subject selection
+        function selectSubject(subject) {
+            selectedSubject = subject;
+            studyData.subjectsStudied.add(subject);
+            updateDashboard();
+            
+            // Show subject content
+            const subjectContent = document.getElementById('subjectContent');
+            subjectContent.style.display = 'block';
+            
+            // Update video placeholder
+            const videoPlaceholder = document.querySelector('.video-placeholder');
+            videoPlaceholder.innerHTML = `📹 ${subject.charAt(0).toUpperCase() + subject.slice(1)} Video Lesson`;
+            
+            // Scroll to content
+            subjectContent.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Start lesson
+        function startLesson() {
+            if (!selectedSubject) {
+                alert('Please select a subject first!');
+                return;
+            }
+            alert(`🎬 Starting ${selectedSubject} lesson! In a real app, this would play an interactive video with:\n\n• Interactive animations\n• Step-by-step explanations\n• Practice exercises\n• Progress tracking`);
+        }
+
+        // Quiz functions
+        function startQuiz() {
+            if (!selectedSubject) {
+                // Show subject selection options
+                const quizContent = document.getElementById('quizContent');
+                quizContent.innerHTML = `
+                    <div style="text-align: center;">
+                        <h3>Select a Subject for Quiz:</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+                            <button class="btn" onclick="selectSubject('mathematics'); startQuiz();">Math Quiz</button>
+                            <button class="btn" onclick="selectSubject('science'); startQuiz();">Science Quiz</button>
+                            <button class="btn" onclick="selectSubject('english'); startQuiz();">English Quiz</button>
+                            <button class="btn" onclick="selectSubject('history'); startQuiz();">History Quiz</button>
+                        </div>
+                        <a href="#" onclick="showSection('subjects')" style="color: #4c51bf;">Or browse subjects first</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            currentQuiz = [...quizData[selectedSubject]]; // Create a copy
+            currentQuestion = 0;
+            score = 0;
+            
+            // Shuffle questions for variety
+            currentQuiz = currentQuiz.sort(() => Math.random() - 0.5);
+            
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const quizContent = document.getElementById('quizContent');
+            
+            if (currentQuestion >= currentQuiz.length) {
+                showQuizResults();
+                return;
+            }
+            
+            const question = currentQuiz[currentQuestion];
+            quizContent.innerHTML = `
+                <div class="question-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3>Question ${currentQuestion + 1} of ${currentQuiz.length}</h3>
+                        <div style="background: #4c51bf; color: white; padding: 5px 15px; border-radius: 20px; font-size: 14px;">
+                            ${selectedSubject.charAt(0).toUpperCase() + selectedSubject.slice(1)}
+                        </div>
+                    </div>
+                    <p style="font-size: 1.2em; margin: 15px 0; font-weight: 600;">${question.question}</p>
+                    <div class="options">
+                        ${question.options.map((option, index) => 
+                            `<div class="option" onclick="selectOption(${index})">${String.fromCharCode(65 + index)}) ${option}</div>`
+                        ).join('')}
+                    </div>
+                    <div style="margin-top: 15px; font-size: 14px; color: #666;">
+                        Select your answer to continue
+                    </div>
+                </div>
+                <div class="quiz-controls">
+                    <button class="btn" onclick="nextQuestion()" id="nextBtn" style="display: none;">Next Question</button>
+                    <a href="#" onclick="startQuiz()" style="color: #4c51bf; margin-left: 20px;">Restart Quiz</a>
+                </div>
+            `;
+        }
+
+        function selectOption(optionIndex) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.style.pointerEvents = 'none'; // Disable further clicks
+                option.classList.remove('selected');
+            });
+            
+            options[optionIndex].classList.add('selected');
+            
+            // Check if answer is correct
+            const correctIndex = currentQuiz[currentQuestion].correct;
+            if (optionIndex === correctIndex) {
+                score++;
+                options[optionIndex].style.background = '#48bb78';
+                options[optionIndex].style.color = 'white';
+            } else {
+                options[optionIndex].style.background = '#f56565';
+                options[optionIndex].style.color = 'white';
+                options[correctIndex].style.background = '#48bb78';
+                options[correctIndex].style.color = 'white';
+            }
+            
+            // Show next button
+            setTimeout(() => {
+                document.getElementById('nextBtn').style.display = 'inline-block';
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            displayQuestion();
+        }
+
+        function showQuizResults() {
+            const percentage = Math.round((score / currentQuiz.length) * 100);
+            studyData.quizCount++;
+            studyData.totalScore = Math.max(studyData.totalScore, percentage);
+            updateDashboard();
+            
+            let resultMessage = '';
+            let resultEmoji = '';
+            
+            if (percentage >= 90) {
+                resultMessage = 'Outstanding! You\'re a true scholar! 🌟';
+                resultEmoji = '🏆';
+            } else if (percentage >= 80) {
+                resultMessage = 'Excellent work! You\'ve mastered this topic! 👏';
+                resultEmoji = '🥇';
+            } else if (percentage >= 70) {
+                resultMessage = 'Good job! You\'re on the right track! 👍';
+                resultEmoji = '🥈';
+            } else if (percentage >= 60) {
+                resultMessage = 'Not bad! A bit more practice will help! 📚';
+                resultEmoji = '🥉';
+            } else {
+                resultMessage = 'Keep studying! You\'ll get there! 💪';
+                resultEmoji = '📖';
+            }
+            
+            const quizContent = document.getElementById('quizContent');
+            quizContent.innerHTML = `
+                <div class="score-display">
+                    <div style="font-size: 4em; margin-bottom: 20px;">${resultEmoji}</div>
+                    <h2>🎉 Quiz Complete!</h2>
+                    <p style="font-size: 1.5em; margin: 15px 0;">Your Score: ${score}/${currentQuiz.length} (${percentage}%)</p>
+                    <p style="font-size: 1.2em; color: #4c51bf; font-weight: 600;">${resultMessage}</p>
+                    
+                    <div style="margin: 30px 0;">
+                        <h4>Detailed Results:</h4>
+                        <p>✅ Correct Answers: ${score}</p>
+                        <p>❌ Incorrect Answers: ${currentQuiz.length - score}</p>
+                        <p>📊 Accuracy Rate: ${percentage}%</p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn" onclick="startQuiz()">Retry Quiz</button>
+                        <a href="#" class="btn" onclick="showSection('subjects')">Choose New Subject</a>
+                        <a href="#" class="btn" onclick="showSection('dashboard')">Back to Dashboard</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Dashboard updates
+        function updateDashboard() {
+            document.getElementById('quizCount').textContent = studyData.quizCount;
+            document.getElementById('totalScore').textContent = studyData.totalScore;
+            document.getElementById('subjectsStudied').textContent = studyData.subjectsStudied.size;
+        }
+
+        // Notes functions
+        function saveNotes() {
+            const notes = document.getElementById('notesTextarea').value;
+            if (notes.trim()) {
+                // In a real app, this would save to a database
+                alert('📝 Notes saved successfully!\n\nYour notes have been saved locally during this session.');
+            } else {
+                alert('📝 Please write some notes first!');
+            }
+        }
+
+        function clearNotes() {
+            if (confirm('Are you sure you want to clear all notes?\n\nThis action cannot be undone.')) {
+                document.getElementById('notesTextarea').value = '';
+                alert('📝 All notes have been cleared!');
+            }
+        }
+
+        // Chatbot functions
+        function toggleChatbot() {
+            const chatbot = document.getElementById('chatbotContainer');
+            chatbot.style.display = chatbot.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message === '') return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Show typing indicator
+            addMessage('Typing...', 'bot');
+            
+            // Simulate bot response
+            setTimeout(() => {
+                // Remove typing indicator
+                const messages = document.getElementById('chatMessages');
+                messages.removeChild(messages.lastChild);
+                
+                const botResponse = getBotResponse(message);
+                addMessage(botResponse, 'bot');
+            }, 1500);
+        }
+
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = text;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function getBotResponse(message) {
+            const msg = message.toLowerCase();
+            
+            // Greeting responses
+            if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
+                return "Hello! 👋 How can I help you with your studies today? I can assist with subjects, quizzes, study tips, or answer questions!";
+            }
+            
+            // Quiz related
+            else if (msg.includes('quiz')) {
+                return "Great choice! 🧠 You can take quizzes in Mathematics, Science, English, or History. Which subject interests you? I can also give you tips on how to prepare for quizzes!";
+            }
+            
+            // Subject specific responses
+            else if (msg.includes('math')) {
+                return "Mathematics is awesome! 🔢 Our math section covers algebra, geometry, and calculus. Would you like to start with a lesson or jump straight to a quiz? I can also help explain specific math concepts!";
+            }
+            else if (msg.includes('science')) {
+                return "Science is fascinating! 🔬 We have content in physics, chemistry, and biology. What specific topic interests you most? I can recommend starting points based on your level!";
+            }
+            else if (msg.includes('english')) {
+                return "English is fundamental! 📝 Our English section covers grammar, literature, and writing skills. Are you looking to improve your writing, understand grammar rules, or explore literature?";
+            }
+            else if (msg.includes('history')) {
+                return "History is amazing! 🏛️ We cover world history and ancient civilizations. Would you like to explore a specific time period or culture? I can suggest interesting topics to start with!";
+            }
+            
+            // Study tips
+            else if (msg.includes('study tips') || msg.includes('how to study')) {
+                return "Here are my top study tips! 📚<br>• Take breaks every 25-30 minutes<br>• Use active recall with flashcards<br>• Practice with quizzes regularly<br>• Teach concepts to others<br>• Create visual mind maps<br>• Don't cram - spread learning over time<br><br>Which tip would you like me to explain more?";
+            }
+            
+            // Help responses
+            else if (msg.includes('help')) {
+                return "I'm here to help! 🤝 Here's what I can assist you with:<br><br>📖 Subject explanations<br>🧠 Quiz preparation<br>📝 Study strategies<br>📊 Progress tracking<br>🎯 Goal setting<br><br>Just ask me about any topic or let me know what you're struggling with!";
+            }
+            
+            // Progress related
+            else if (msg.includes('progress') || msg.includes('score')) {
+                return `Great question! 📈 Based on your current stats:<br><br>🎯 Quizzes completed: ${studyData.quizCount}<br>🏆 Best score: ${studyData.totalScore}%<br>📚 Subjects explored: ${studyData.subjectsStudied.size}<br><br>Keep up the great work! Which area would you like to focus on improving?`;
+            }
+            
+            // Motivational responses
+            else if (msg.includes('difficult') || msg.includes('hard') || msg.includes('struggling')) {
+                return "Don't worry, learning can be challenging! 💪 Remember:<br><br>• Every expert was once a beginner<br>• Mistakes are part of learning<br>• Progress, not perfection is the goal<br>• Break complex topics into smaller parts<br><br>Which specific topic is giving you trouble? I'll help you tackle it step by step!";
+            }
+            
+            // Default responses
+            else {
+                const responses = [
+                    "That's an interesting question! 🤔 While I'm still learning, I recommend exploring our subject materials. Is there a specific topic you'd like to dive deeper into?",
+                    "Great question! 💭 I'd love to help you explore that further. Have you checked out our quiz section? It's a great way to test your knowledge!",
+                    "Interesting! 🎯 You might find our study materials helpful for that topic. Would you like me to guide you to a specific subject area?",
+                    "That's a thoughtful question! 📚 I suggest starting with our interactive lessons. Which subject area interests you most right now?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Auto-save notes functionality
+        let autoSaveTimeout;
+        document.getElementById('notesTextarea').addEventListener('input', function() {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(() => {
+                // In a real app, implement auto-save functionality here
+                console.log('Auto-saving notes...');
+            }, 2000);
+        });
+
+        // Initialize app
+        function initializeApp() {
+            // Set focus on username field
+            document.getElementById('username').focus();
+            
+            // Add some sample notes
+            document.getElementById('notesTextarea').placeholder = 
+                "Write your notes here... They'll be saved automatically!\n\nExample topics to take notes on:\n• Key formulas and concepts\n• Important dates and facts\n• Personal insights and questions\n• Study strategies that work for you";
+        }
+
+        // Start the application
+        initializeApp();
+    </script>
+</body>
+</html>
