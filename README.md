@@ -55,8 +55,3 @@ Password: admin
 
 These credentials are for demonstration purposes only.
 
-📂 Project Structure
-EduZod/
-│
-├── index.html        # Main application file
-├── README.md         # Project documentation
